@@ -71,13 +71,15 @@ open class ActionSheetItem: NSObject {
         subtitle: String? = nil,
         value: Any? = nil,
         image: UIImage? = nil,
-        tapBehavior: TapBehavior = .dismiss) {
+        tapBehavior: TapBehavior = .dismiss,
+        isEnabled: Bool = true) {
         self.title = title
         self.subtitle = subtitle
         self.value = value
         self.image = image
         self.tapBehavior = tapBehavior
         self.cellStyle = subtitle == nil ? .default : .value1
+        self.isEnabled = isEnabled
         super.init()
     }
     
@@ -96,6 +98,7 @@ open class ActionSheetItem: NSObject {
     public var tapBehavior: TapBehavior
     public var title: String
     public var value: Any?
+    public var isEnabled: Bool?
     
     public var cellReuseIdentifier: String { return className }
     public var cellStyle: UITableViewCell.CellStyle
@@ -172,6 +175,9 @@ open class ActionSheetItemCell: UITableViewCell {
         detailTextLabel?.font = subtitleFont
         detailTextLabel?.text = item.subtitle
         detailTextLabel?.textColor = subtitleColor
+        textLabel?.isEnabled = item.isEnabled!
+        detailTextLabel?.isEnabled = item.isEnabled!
+        isUserInteractionEnabled = item.isEnabled!
     }
     
     func refresh(with item: ActionSheetItem) {
